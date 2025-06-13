@@ -197,6 +197,7 @@ export default function LocationsPage() {
     'No image'
   )}
 </td>
+
                     <td>
                       <button onClick={handleSaveEdit}>Save</button>
                       <button onClick={() => setEditingId(null)}>Cancel</button>
