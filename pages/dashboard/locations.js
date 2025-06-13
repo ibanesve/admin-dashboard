@@ -203,21 +203,15 @@ const handleSubmit = async (e) => {
                         onChange={handleEditChange}
                       />
                     </td>
-                    <td>
-                      <input
-                        name="category"
-                        value={editForm.category}
-                        onChange={handleEditChange}
-                      />
-                    </td>
-
                  <td>
-  {place.image_url ? (
-    <img src={place.image_url} alt={place.name} width="100" />
-  ) : (
-    'No image'
-  )}
-</td>
+      {place.image_url ? (
+        <img src={place.image_url} alt={place.name} width="100" />
+      ) : (
+        'No image'
+      )}
+    </td>
+
+               
 
                     <td>
                       <button onClick={handleSaveEdit}>Save</button>
