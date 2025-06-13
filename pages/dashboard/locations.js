@@ -9,7 +9,7 @@ export default function LocationsPage() {
   name: '',
   description: '',
   category: '',
-  image: null
+  image: '',
 })
   const [editingId, setEditingId] = useState(null)
   const [editForm, setEditForm] = useState({})
