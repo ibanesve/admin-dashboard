@@ -35,53 +35,65 @@ const handleSubmit = async (e) => {
 
   let image_url = ''
 
-  if (form.image) {
-    const fileExt = form.image.name.split('.').pop()
-    const fileName = `${Date.now()}.${fileExt}`
-    const filePath = `${fileName}`
+  try {
+    if (form.image) {
+      const fileExt = form.image.name.split('.').pop()
+      const fileName = `${Date.now()}.${fileExt}`
+      const filePath = `${fileName}`
 
-    // Upload to Supabase Storage
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from('places-images')
-      .upload(filePath, form.image)
+      console.log('Uploading image:', filePath)
 
-    if (uploadError) {
-      alert('Upload error: ' + uploadError.message)
-      return
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('places-images')
+        .upload(filePath, form.image)
+
+      if (uploadError) {
+        console.error('Upload Error:', uploadError)
+        alert('Upload error: ' + uploadError.message)
+        return
+      }
+
+      console.log('Upload success:', uploadData)
+
+      const {
+        data: publicUrlData,
+        error: publicUrlError,
+      } = await supabase.storage
+        .from('places-images')
+        .getPublicUrl(filePath)
+
+      if (publicUrlError) {
+        console.error('Public URL error:', publicUrlError)
+        alert('URL error: ' + publicUrlError.message)
+        return
+      }
+
+      console.log('Public URL data:', publicUrlData)
+
+      image_url = publicUrlData.publicUrl
     }
 
-    // Get public URL (CRUCIAL: must await this)
-    const {
-      data: publicUrlData,
-      error: publicUrlError,
-    } = await supabase.storage
-      .from('places-images')
-      .getPublicUrl(filePath)
+    console.log('Final image_url to insert:', image_url)
 
-    if (publicUrlError) {
-      alert('URL error: ' + publicUrlError.message)
-      return
+    const { error } = await supabase.from('places').insert([
+      {
+        name: form.name,
+        description: form.description,
+        category: form.category,
+        image_url: image_url,
+      },
+    ])
+
+    if (error) {
+      console.error('Insert Error:', error)
+      alert('Error saving to table: ' + error.message)
+    } else {
+      setForm({ name: '', description: '', category: '', image: null })
+      fetchPlaces()
     }
-
-    image_url = publicUrlData.publicUrl
-    console.log('📸 image_url:', image_url)
-  }
-
-  // Insert into places table
-  const { error } = await supabase.from('places').insert([
-    {
-      name: form.name,
-      description: form.description,
-      category: form.category,
-      image_url: image_url,
-    },
-  ])
-
-  if (error) {
-    alert('Error saving to table: ' + error.message)
-  } else {
-    setForm({ name: '', description: '', category: '', image: null })
-    fetchPlaces()
+  } catch (err) {
+    console.error('Unexpected error:', err)
+    alert('Unexpected error occurred')
   }
 }
 
