@@ -8,7 +8,7 @@ export default function UsersPage() {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const { data, error } = await supabase.from('users').select('*')
+      const { data, error } = await supabase.from('profiles').select('*')
       if (error) setError(error.message)
       else setUsers(data)
       setLoading(false)
