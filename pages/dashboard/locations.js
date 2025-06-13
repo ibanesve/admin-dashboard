@@ -5,7 +5,12 @@ export default function LocationsPage() {
   const [places, setPlaces] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [form, setForm] = useState({ name: '', description: '', category: '' })
+  const [form, setForm] = useState({
+  name: '',
+  description: '',
+  category: '',
+  image: null
+})
   const [editingId, setEditingId] = useState(null)
   const [editForm, setEditForm] = useState({})
 
@@ -25,16 +30,51 @@ export default function LocationsPage() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    const { error } = await supabase.from('places').insert([form])
-    if (error) {
-      alert('Error adding place: ' + error.message)
-    } else {
-      setForm({ name: '', description: '', category: '' })
-      fetchPlaces()
+ const handleSubmit = async (e) => {
+  e.preventDefault()
+
+  let image_url = ''
+
+  // Upload image if selected
+  if (form.image) {
+    const fileExt = form.image.name.split('.').pop()
+    const fileName = `${Date.now()}.${fileExt}`
+    const filePath = `${fileName}`
+
+    const { error: uploadError } = await supabase.storage
+      .from('places-images')
+      .upload(filePath, form.image)
+
+    if (uploadError) {
+      alert('Error uploading image: ' + uploadError.message)
+      return
     }
+
+    const { data: publicUrl } = supabase.storage
+      .from('places-images')
+      .getPublicUrl(filePath)
+
+    image_url = publicUrl.publicUrl
   }
+
+  // Insert place with image_url
+  const { error } = await supabase.from('places').insert([
+    {
+      name: form.name,
+      description: form.description,
+      category: form.category,
+      image_url
+    }
+  ])
+
+  if (error) {
+    alert('Error adding place: ' + error.message)
+  } else {
+    setForm({ name: '', description: '', category: '', image: null })
+    fetchPlaces()
+  }
+}
+
 
   const handleEditClick = (place) => {
     setEditingId(place.id)
@@ -97,6 +137,11 @@ export default function LocationsPage() {
           onChange={handleChange}
           required
         /><br />
+            <input
+  type="file"
+  accept="image/*"
+  onChange={(e) => setForm({ ...form, image: e.target.files[0] })}
+/><br />
         <button type="submit">Add Place</button>
       </form>
 
@@ -140,6 +185,14 @@ export default function LocationsPage() {
                         onChange={handleEditChange}
                       />
                     </td>
+
+                 <td>
+  {place.image_url ? (
+    <img src={place.image_url} alt={place.name} width="100" />
+  ) : (
+    'No image'
+  )}
+</td>
                     <td>
                       <button onClick={handleSaveEdit}>Save</button>
                       <button onClick={() => setEditingId(null)}>Cancel</button>
