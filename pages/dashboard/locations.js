@@ -60,13 +60,14 @@ export default function LocationsPage() {
 
   // Insert place with image_url
   const { error } = await supabase.from('places').insert([
-    {
-      name: form.name,
-      description: form.description,
-      category: form.category,
-      image_url
-    }
-  ])
+  {
+    name: form.name,
+    description: form.description,
+    category: form.category,
+    image_url: image_url
+  }
+])
+
 
   if (error) {
     alert('Error adding place: ' + error.message)
