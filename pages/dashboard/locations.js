@@ -40,41 +40,45 @@ const handleSubmit = async (e) => {
     const fileName = `${Date.now()}.${fileExt}`
     const filePath = `${fileName}`
 
-    // 1. Upload image to Supabase Storage
-    const { error: uploadError } = await supabase.storage
+    // Upload to Supabase Storage
+    const { data: uploadData, error: uploadError } = await supabase.storage
       .from('places-images')
       .upload(filePath, form.image)
 
     if (uploadError) {
-      alert('Error uploading image: ' + uploadError.message)
+      alert('Upload error: ' + uploadError.message)
       return
     }
 
-    // 2. Get public URL of the uploaded image
-    const { data: publicData, error: publicUrlError } = await supabase.storage
+    // Get public URL (CRUCIAL: must await this)
+    const {
+      data: publicUrlData,
+      error: publicUrlError,
+    } = await supabase.storage
       .from('places-images')
       .getPublicUrl(filePath)
 
     if (publicUrlError) {
-      alert('Error getting image URL: ' + publicUrlError.message)
+      alert('URL error: ' + publicUrlError.message)
       return
     }
 
-    image_url = publicData.publicUrl
+    image_url = publicUrlData.publicUrl
+    console.log('📸 image_url:', image_url)
   }
 
-  // 3. Insert new row into 'places' table including image_url
+  // Insert into places table
   const { error } = await supabase.from('places').insert([
     {
       name: form.name,
       description: form.description,
       category: form.category,
-      image_url: image_url
-    }
+      image_url: image_url,
+    },
   ])
 
   if (error) {
-    alert('Error adding place: ' + error.message)
+    alert('Error saving to table: ' + error.message)
   } else {
     setForm({ name: '', description: '', category: '', image: null })
     fetchPlaces()
