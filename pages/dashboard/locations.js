@@ -188,47 +188,59 @@ const handleSubmit = async (e) => {
             {places.map((place) => (
               <tr key={place.id}>
                 {editingId === place.id ? (
-                  <>
-                    <td>
-                      <input
-                        name="name"
-                        value={editForm.name}
-                        onChange={handleEditChange}
-                      />
-                    </td>
-                    <td>
-                      <textarea
-                        name="description"
-                        value={editForm.description}
-                        onChange={handleEditChange}
-                      />
-                    </td>
-                 <td>
+  <>
+    <td>
+      <input
+        name="name"
+        value={editForm.name}
+        onChange={handleEditChange}
+      />
+    </td>
+    <td>
+      <textarea
+        name="description"
+        value={editForm.description}
+        onChange={handleEditChange}
+      />
+    </td>
+    <td>
+      <input
+        name="category"
+        value={editForm.category}
+        onChange={handleEditChange}
+      />
+    </td>
+    <td>
       {place.image_url ? (
         <img src={place.image_url} alt={place.name} width="100" />
       ) : (
         'No image'
       )}
     </td>
+    <td>
+      <button onClick={handleSaveEdit}>Save</button>
+      <button onClick={() => setEditingId(null)}>Cancel</button>
+    </td>
+  </>
+) : (
+  <>
+    <td>{place.name}</td>
+    <td>{place.description}</td>
+    <td>{place.category}</td>
+    <td>
+      {place.image_url ? (
+        <img src={place.image_url} alt={place.name} width="100" />
+      ) : (
+        'No image'
+      )}
+    </td>
+    <td>
+      <button onClick={() => handleEditClick(place)}>Edit</button>
+      <button onClick={() => handleDelete(place.id)}>Delete</button>
+    </td>
+  </>
+)}
 
-               
-
-                    <td>
-                      <button onClick={handleSaveEdit}>Save</button>
-                      <button onClick={() => setEditingId(null)}>Cancel</button>
-                    </td>
-                  </>
-                ) : (
-                  <>
-                    <td>{place.name}</td>
-                    <td>{place.description}</td>
-                    <td>{place.category}</td>
-                    <td>
-                      <button onClick={() => handleEditClick(place)}>Edit</button>
-                      <button onClick={() => handleDelete(place.id)}>Delete</button>
-                    </td>
-                  </>
-                )}
               </tr>
             ))}
           </tbody>
