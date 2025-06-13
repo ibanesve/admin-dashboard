@@ -50,9 +50,10 @@ export default function LocationsPage() {
       return
     }
 
-    const { data: publicUrl } = supabase.storage
-      .from('places-images')
-      .getPublicUrl(filePath)
+  const { data } = await supabase.storage
+  .from('places-images')
+  .getPublicUrl(filePath)
+
 
     image_url = publicUrl.publicUrl
   }
