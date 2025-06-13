@@ -153,14 +153,16 @@ export default function LocationsPage() {
       {!loading && places.length === 0 && <p>No places found.</p>}
       {!loading && places.length > 0 && (
         <table border="1" cellPadding="8">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Category</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+       <thead>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Category</th>
+    <th>Image</th>
+    <th>Actions</th>
+  </tr>
+</thead>
+
           <tbody>
             {places.map((place) => (
               <tr key={place.id}>
