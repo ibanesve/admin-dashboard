@@ -30,17 +30,17 @@ export default function LocationsPage() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
- const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault()
 
   let image_url = ''
 
-  // Upload image if selected
   if (form.image) {
     const fileExt = form.image.name.split('.').pop()
     const fileName = `${Date.now()}.${fileExt}`
     const filePath = `${fileName}`
 
+    // 1. Upload image to Supabase Storage
     const { error: uploadError } = await supabase.storage
       .from('places-images')
       .upload(filePath, form.image)
@@ -50,24 +50,28 @@ export default function LocationsPage() {
       return
     }
 
-  const { data } = await supabase.storage
-  .from('places-images')
-  .getPublicUrl(filePath)
+    // 2. Get public URL of the uploaded image
+    const { data: publicData, error: publicUrlError } = await supabase.storage
+      .from('places-images')
+      .getPublicUrl(filePath)
 
+    if (publicUrlError) {
+      alert('Error getting image URL: ' + publicUrlError.message)
+      return
+    }
 
-    image_url = publicUrl.publicUrl
+    image_url = publicData.publicUrl
   }
 
-  // Insert place with image_url
+  // 3. Insert new row into 'places' table including image_url
   const { error } = await supabase.from('places').insert([
-  {
-    name: form.name,
-    description: form.description,
-    category: form.category,
-    image_url: image_url
-  }
-])
-
+    {
+      name: form.name,
+      description: form.description,
+      category: form.category,
+      image_url: image_url
+    }
+  ])
 
   if (error) {
     alert('Error adding place: ' + error.message)
@@ -76,6 +80,7 @@ export default function LocationsPage() {
     fetchPlaces()
   }
 }
+
 
 
   const handleEditClick = (place) => {
