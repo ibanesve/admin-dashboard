@@ -5,7 +5,7 @@ export default function LocationsPage() {
   const [places, setPlaces] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [form, setForm] = useState({ name: '', description: '' })
+  const [form, setForm] = useState({ name: '', description: '', category: '' })
 
   useEffect(() => {
     fetchPlaces()
@@ -55,6 +55,14 @@ export default function LocationsPage() {
           onChange={handleChange}
           required
         /><br />
+            <input
+  name="category"
+  placeholder="Category"
+  value={form.category}
+  onChange={handleChange}
+  required
+/><br />
+
         <button type="submit">Add Place</button>
       </form>
 
