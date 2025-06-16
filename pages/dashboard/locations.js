@@ -82,9 +82,10 @@ export default function LocationsPage() {
           category: form.category,
           image_url: image_url,
           coordinates: {
-            lat: parseFloat(form.coordinates.lat),
-            lng: parseFloat(form.coordinates.lng),
-          },
+  lat: parseFloat(form.lat),
+  lng: parseFloat(form.lng),
+},
+
         },
       ])
 
@@ -156,6 +157,7 @@ export default function LocationsPage() {
         <input name="category" placeholder="Category" value={form.category} onChange={handleChange} required /><br />
         <input name="lat" placeholder="Latitude" value={form.coordinates.lat} onChange={handleChange} type="number" step="any" /><br />
         <input name="lng" placeholder="Longitude" value={form.coordinates.lng} onChange={handleChange} type="number" step="any" /><br />
+  
         <input type="file" accept="image/*" onChange={(e) => setForm({ ...form, image: e.target.files[0] })} /><br />
         <button type="submit">Add Place</button>
       </form>
@@ -184,8 +186,27 @@ export default function LocationsPage() {
                     <td><input name="name" value={editForm.name} onChange={handleEditChange} /></td>
                     <td><textarea name="description" value={editForm.description} onChange={handleEditChange} /></td>
                     <td><input name="category" value={editForm.category} onChange={handleEditChange} /></td>
-                    <td><input name="lat" type="number" step="any" value={editForm.coordinates?.lat || ''} onChange={handleEditChange} /></td>
-                    <td><input name="lng" type="number" step="any" value={editForm.coordinates?.lng || ''} onChange={handleEditChange} /></td>
+                   <input
+  type="number"
+  name="lat"
+  placeholder="Latitude"
+  value={form.lat}
+  onChange={handleChange}
+  step="any"
+  required
+/><br />
+
+<input
+  type="number"
+  name="lng"
+  placeholder="Longitude"
+  value={form.lng}
+  onChange={handleChange}
+  step="any"
+  required
+/><br />
+
+        
                     <td>{place.image_url ? <img src={place.image_url} alt={place.name} width="100" /> : 'No image'}</td>
                     <td>
                       <button onClick={handleSaveEdit}>Save</button>
