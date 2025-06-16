@@ -11,8 +11,9 @@ const [form, setForm] = useState({
   category: '',
   image: null,
   lat: '',
-  lng: ''
-})
+  lng: '',
+});
+
 
   const [editingId, setEditingId] = useState(null)
   const [editForm, setEditForm] = useState({})
@@ -78,22 +79,14 @@ const handleSubmit = async (e) => {
 
     console.log('Final image_url to insert:', image_url)
 
-    const { error } = await supabase.from('places').insert([
-      {
-        name: form.name,
-    description: form.description,
-    category: form.category,
-    image_url: image_url,
-    latitude: parseFloat(form.latitude),
-    longitude: parseFloat(form.longitude)
-      },
-    ])
+
+
 
     if (error) {
       console.error('Insert Error:', error)
       alert('Error saving to table: ' + error.message)
     } else {
-      setForm({ name: '', description: '', category: '', image: null })
+      setForm({ name: '', description: '', category: '', image: null, lat: '', lng: '' })
       fetchPlaces()
     }
   } catch (err) {
@@ -180,6 +173,27 @@ const handleSubmit = async (e) => {
 ])
 
 
+            <input
+  type="number"
+  name="lat"
+  placeholder="Latitude"
+  value={form.lat}
+  onChange={handleChange}
+  step="any"
+  required
+/><br />
+
+<input
+  type="number"
+  name="lng"
+  placeholder="Longitude"
+  value={form.lng}
+  onChange={handleChange}
+  step="any"
+  required
+/><br />
+
+
 
             <input
   type="file"
@@ -236,61 +250,12 @@ const handleSubmit = async (e) => {
       />
     </td>
 
-                 <td>
-  {editingId === place.id ? (
-    <input
-      name="latitude"
-      value={editForm.latitude || ''}
-      onChange={handleEditChange}
-      type="number"
-      step="any"
-    />
-  ) : (
-    place.latitude
-  )}
-</td>
-<td>
-  {editingId === place.id ? (
-    <input
-      name="longitude"
-      value={editForm.longitude || ''}
-      onChange={handleEditChange}
-      type="number"
-      step="any"
-    />
-  ) : (
-    place.longitude
-  )}
-</td>
+                <td>{place.coordinates?.lat || '—'}</td>
+<td>{place.coordinates?.lng || '—'}</td>
 
 
-                 <td>
-  {editingId === place.id ? (
-    <input
-      name="latitude"
-      value={editForm.latitude || ''}
-      onChange={handleEditChange}
-      type="number"
-      step="any"
-    />
-  ) : (
-    place.latitude
-  )}
-</td>
-<td>
-  {editingId === place.id ? (
-    <input
-      name="longitude"
-      value={editForm.longitude || ''}
-      onChange={handleEditChange}
-      type="number"
-      step="any"
-    />
-  ) : (
-    place.longitude
-  )}
-</td>
 
+              
                  
     <td>
       {place.image_url ? (
