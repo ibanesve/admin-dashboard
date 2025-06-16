@@ -137,7 +137,7 @@ export default function LocationsPage() {
       <h1>Places</h1>
 
 <form onSubmit={handleSubmit} style={{ marginBottom: '2rem' }}>
-  <h3>Add New Place</h3>
+  <h3>Add New Place testing form here</h3>
   <input
     name="name"
     placeholder="Name"
