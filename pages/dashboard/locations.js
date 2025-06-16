@@ -6,10 +6,12 @@ export default function LocationsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [form, setForm] = useState({
-  name: '',
+ name: '',
   description: '',
   category: '',
-  image: '',
+  image: null,
+  latitude: '',
+  longitude: ''
 })
   const [editingId, setEditingId] = useState(null)
   const [editForm, setEditForm] = useState({})
@@ -78,9 +80,11 @@ const handleSubmit = async (e) => {
     const { error } = await supabase.from('places').insert([
       {
         name: form.name,
-        description: form.description,
-        category: form.category,
-        image_url: image_url,
+    description: form.description,
+    category: form.category,
+    image_url: image_url,
+    latitude: parseFloat(form.latitude),
+    longitude: parseFloat(form.longitude)
       },
     ])
 
@@ -161,6 +165,23 @@ const handleSubmit = async (e) => {
           required
         /><br />
             <input
+  name="latitude"
+  type="number"
+  step="any"
+  placeholder="Latitude"
+  value={form.latitude}
+  onChange={handleChange}
+/><br />
+<input
+  name="longitude"
+  type="number"
+  step="any"
+  placeholder="Longitude"
+  value={form.longitude}
+  onChange={handleChange}
+/><br />
+
+            <input
   type="file"
   accept="image/*"
   onChange={(e) => setForm({ ...form, image: e.target.files[0] })}
@@ -210,6 +231,35 @@ const handleSubmit = async (e) => {
         onChange={handleEditChange}
       />
     </td>
+
+                 <td>
+  {editingId === place.id ? (
+    <input
+      name="latitude"
+      value={editForm.latitude || ''}
+      onChange={handleEditChange}
+      type="number"
+      step="any"
+    />
+  ) : (
+    place.latitude
+  )}
+</td>
+<td>
+  {editingId === place.id ? (
+    <input
+      name="longitude"
+      value={editForm.longitude || ''}
+      onChange={handleEditChange}
+      type="number"
+      step="any"
+    />
+  ) : (
+    place.longitude
+  )}
+</td>
+
+                 
     <td>
       {place.image_url ? (
         <img src={place.image_url} alt={place.name} width="100" />
