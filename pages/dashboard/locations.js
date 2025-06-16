@@ -150,17 +150,62 @@ export default function LocationsPage() {
     <div style={{ padding: '2rem' }}>
       <h1>Places</h1>
 
-      <form onSubmit={handleSubmit} style={{ marginBottom: '2rem' }}>
-        <h3>Add New Place</h3>
-        <input name="name" placeholder="Name" value={form.name} onChange={handleChange} required /><br />
-        <textarea name="description" placeholder="Description" value={form.description} onChange={handleChange} required /><br />
-        <input name="category" placeholder="Category" value={form.category} onChange={handleChange} required /><br />
-        <input name="lat" placeholder="Latitude" value={form.coordinates.lat} onChange={handleChange} type="number" step="any" /><br />
-        <input name="lng" placeholder="Longitude" value={form.coordinates.lng} onChange={handleChange} type="number" step="any" /><br />
-  
-        <input type="file" accept="image/*" onChange={(e) => setForm({ ...form, image: e.target.files[0] })} /><br />
-        <button type="submit">Add Place</button>
-      </form>
+    <form onSubmit={handleSubmit} style={{ marginBottom: '2rem' }}>
+  <h3>Add New Place</h3>
+
+  <input
+    name="name"
+    placeholder="Name"
+    value={form.name}
+    onChange={handleChange}
+    required
+  /><br />
+
+  <textarea
+    name="description"
+    placeholder="Description"
+    value={form.description}
+    onChange={handleChange}
+    required
+  /><br />
+
+  <input
+    name="category"
+    placeholder="Category"
+    value={form.category}
+    onChange={handleChange}
+    required
+  /><br />
+
+  <input
+    type="number"
+    name="lat"
+    placeholder="Latitude"
+    value={form.lat}
+    onChange={handleChange}
+    step="any"
+    required
+  /><br />
+
+  <input
+    type="number"
+    name="lng"
+    placeholder="Longitude"
+    value={form.lng}
+    onChange={handleChange}
+    step="any"
+    required
+  /><br />
+
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => setForm({ ...form, image: e.target.files[0] })}
+  /><br />
+
+  <button type="submit">Add Place</button>
+</form>
+
 
       {loading && <p>Loading...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
