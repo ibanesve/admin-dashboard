@@ -153,6 +153,8 @@ export default function LocationsPage() {
     <form onSubmit={handleSubmit} style={{ marginBottom: '2rem' }}>
   <h3>Add New Place</h3>
 
+  <p>🧭 Coordinate inputs should show below:</p>
+
   <input
     name="name"
     placeholder="Name"
