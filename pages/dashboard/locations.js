@@ -224,7 +224,12 @@ const handleSubmit = async (e) => {
   </>
 ) : (
   <>
-    <td>{place.name}</td>
+    <td>
+  <a href={`/place/${place.id}`} target="_blank" rel="noopener noreferrer">
+    {place.name}
+  </a>
+</td>
+
     <td>{place.description}</td>
     <td>{place.category}</td>
     <td>
