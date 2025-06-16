@@ -10,34 +10,54 @@ export default function PlacePage() {
 
   useEffect(() => {
     if (!id) return
-
     const fetchPlace = async () => {
       const { data, error } = await supabase
         .from('places')
         .select('*')
         .eq('id', id)
         .single()
-
-      if (error) {
-        console.error('Error fetching place:', error)
-      } else {
-        setPlace(data)
-      }
+      if (!error) setPlace(data)
       setLoading(false)
     }
-
     fetchPlace()
   }, [id])
 
-  if (loading) return <p>Loading...</p>
-  if (!place) return <p>Place not found.</p>
+  if (loading) return <p style={styles.loading}>Loading...</p>
+  if (!place) return <p style={styles.notFound}>Place not found</p>
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>{place.name}</h1>
-      <img src={place.image_url} alt={place.name} style={{ maxWidth: '100%' }} />
-      <p>{place.description}</p>
-      <p><strong>Category:</strong> {place.category}</p>
+    <div style={styles.page}>
+      {place.image_url && (
+        <div style={styles.bannerContainer}>
+          <img src={place.image_url} alt={place.name} style={styles.banner} />
+        </div>
+      )}
+      <div style={styles.content}>
+        <h1 style={styles.title}>{place.name}</h1>
+        <p style={styles.category}>{place.category}</p>
+        <p style={styles.description}>{place.description}</p>
+      </div>
     </div>
   )
 }
+
+const styles = {
+  page: {
+    fontFamily: 'system-ui, sans-serif',
+    color: '#333',
+    lineHeight: 1.6,
+  },
+  loading: {
+    padding: '2rem',
+    textAlign: 'center',
+    fontSize: '1.2rem',
+  },
+  notFound: {
+    padding: '2rem',
+    textAlign: 'center',
+    color: '#aa0000',
+    fontWeight: 'bold',
+  },
+  bannerContainer: {
+    width: '100%',
+    maxHeigh
