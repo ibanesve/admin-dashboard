@@ -5,14 +5,15 @@ export default function LocationsPage() {
   const [places, setPlaces] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [form, setForm] = useState({
- name: '',
+const [form, setForm] = useState({
+  name: '',
   description: '',
   category: '',
   image: null,
-  latitude: '',
-  longitude: ''
+  lat: '',
+  lng: ''
 })
+
   const [editingId, setEditingId] = useState(null)
   const [editForm, setEditForm] = useState({})
 
@@ -164,22 +165,21 @@ const handleSubmit = async (e) => {
           onChange={handleChange}
           required
         /><br />
-            <input
-  name="latitude"
-  type="number"
-  step="any"
-  placeholder="Latitude"
-  value={form.latitude}
-  onChange={handleChange}
-/><br />
-<input
-  name="longitude"
-  type="number"
-  step="any"
-  placeholder="Longitude"
-  value={form.longitude}
-  onChange={handleChange}
-/><br />
+            const { error } = await supabase.from('places').insert([
+  {
+    name: form.name,
+    description: form.description,
+    category: form.category,
+    image_url: image_url,
+    coordinates: {
+      lat: parseFloat(form.lat),
+      lng: parseFloat(form.lng)
+    },
+    addedBy: userId // optional if used
+  },
+])
+
+
 
             <input
   type="file"
