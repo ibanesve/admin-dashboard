@@ -43,50 +43,70 @@ export default function LocationsPage() {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    let image_url = ''
+  e.preventDefault()
+  let image_url = ''
 
-    try {
-      if (form.image) {
-        const fileExt = form.image.name.split('.').pop()
-        const fileName = `${Date.now()}.${fileExt}`
-        const filePath = `${fileName}`
+  try {
+    if (form.image) {
+      const fileExt = form.image.name.split('.').pop()
+      const fileName = `${Date.now()}.${fileExt}`
+      const filePath = `${fileName}`
 
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('places-images')
-          .upload(filePath, form.image)
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('places-images')
+        .upload(filePath, form.image)
 
-        if (uploadError) {
-          console.error('Upload Error:', uploadError)
-          alert('Upload error: ' + uploadError.message)
-          return
-        }
-
-        const { data: publicUrlData, error: publicUrlError } = await supabase.storage
-          .from('places-images')
-          .getPublicUrl(filePath)
-
-        if (publicUrlError) {
-          console.error('Public URL error:', publicUrlError)
-          alert('URL error: ' + publicUrlError.message)
-          return
-        }
-
-        image_url = publicUrlData.publicUrl
+      if (uploadError) {
+        console.error('Upload Error:', uploadError)
+        alert('Upload error: ' + uploadError.message)
+        return
       }
 
-      if (error) {
-        console.error('Insert Error:', error)
-        alert('Error saving to table: ' + error.message)
-      } else {
-        setForm({ name: '', description: '', category: '', image: null, coordinates: { lat: '', lng: '' } })
-        fetchPlaces()
+      const { data: publicUrlData, error: publicUrlError } = await supabase.storage
+        .from('places-images')
+        .getPublicUrl(filePath)
+
+      if (publicUrlError) {
+        console.error('Public URL error:', publicUrlError)
+        alert('URL error: ' + publicUrlError.message)
+        return
       }
-    } catch (err) {
-      console.error('Unexpected error:', err)
-      alert('Unexpected error occurred')
+
+      image_url = publicUrlData.publicUrl
     }
+
+    const { error } = await supabase.from('places').insert([
+      {
+        name: form.name,
+        description: form.description,
+        category: form.category,
+        image_url: image_url,
+        coordinates: {
+          lat: parseFloat(form.coordinates.lat),
+          lng: parseFloat(form.coordinates.lng),
+        },
+      },
+    ])
+
+    if (error) {
+      console.error('Insert Error:', error)
+      alert('Error saving to table: ' + error.message)
+    } else {
+      setForm({
+        name: '',
+        description: '',
+        category: '',
+        image: null,
+        coordinates: { lat: '', lng: '' },
+      })
+      fetchPlaces()
+    }
+  } catch (err) {
+    console.error('Unexpected error:', err)
+    alert('Unexpected error occurred')
   }
+}
+
 
   const handleEditClick = (place) => {
     setEditingId(place.id)
