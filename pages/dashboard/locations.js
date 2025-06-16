@@ -136,11 +136,8 @@ export default function LocationsPage() {
     <div style={{ padding: '2rem' }}>
       <h1>Places</h1>
 
-    <form onSubmit={handleSubmit} style={{ marginBottom: '2rem' }}>
+<form onSubmit={handleSubmit} style={{ marginBottom: '2rem' }}>
   <h3>Add New Place</h3>
-
-  <p>🧭 Coordinate inputs should show below:</p>
-
   <input
     name="name"
     placeholder="Name"
@@ -148,7 +145,6 @@ export default function LocationsPage() {
     onChange={handleChange}
     required
   /><br />
-
   <textarea
     name="description"
     placeholder="Description"
@@ -156,7 +152,6 @@ export default function LocationsPage() {
     onChange={handleChange}
     required
   /><br />
-
   <input
     name="category"
     placeholder="Category"
@@ -165,6 +160,7 @@ export default function LocationsPage() {
     required
   /><br />
 
+  {/* ✅ Coordinates Inputs */}
   <input
     type="number"
     name="lat"
@@ -172,9 +168,7 @@ export default function LocationsPage() {
     value={form.lat}
     onChange={handleChange}
     step="any"
-    required
   /><br />
-
   <input
     type="number"
     name="lng"
@@ -182,17 +176,19 @@ export default function LocationsPage() {
     value={form.lng}
     onChange={handleChange}
     step="any"
-    required
   /><br />
+
+  {/* ✅ Optional test */}
+  <p>🧭 Coordinate inputs should show above this line</p>
 
   <input
     type="file"
     accept="image/*"
     onChange={(e) => setForm({ ...form, image: e.target.files[0] })}
   /><br />
-
   <button type="submit">Add Place</button>
 </form>
+
 
 
       {loading && <p>Loading...</p>}
