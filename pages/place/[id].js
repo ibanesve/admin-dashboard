@@ -60,4 +60,30 @@ const styles = {
   },
   bannerContainer: {
     width: '100%',
-    maxHeigh
+    maxHeight: '300px',
+    overflow: 'hidden',
+  },
+  banner: {
+    width: '100%',
+    height: 'auto',
+    objectFit: 'cover',
+  },
+  content: {
+    padding: '1rem 2rem',
+  },
+  title: {
+    fontSize: '2rem',
+    fontWeight: 'bold',
+    marginBottom: '0.5rem',
+  },
+  category: {
+    fontSize: '1rem',
+    fontStyle: 'italic',
+    color: '#666',
+    marginBottom: '1rem',
+  },
+  description: {
+    fontSize: '1.1rem',
+  },
+}
+
