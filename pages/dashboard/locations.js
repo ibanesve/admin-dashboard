@@ -185,18 +185,20 @@ export default function LocationsPage() {
   type="number"
   name="lat"
   placeholder="Latitude"
-  value={form.lat}
+  value={form.coordinates.lat}
   onChange={handleChange}
   step="any"
 /><br />
+
 <input
   type="number"
   name="lng"
   placeholder="Longitude"
-  value={form.lng}
+  value={form.coordinates.lng}
   onChange={handleChange}
   step="any"
 /><br />
+
 
 
   {/* ✅ Optional test */}
