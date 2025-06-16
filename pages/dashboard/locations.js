@@ -161,22 +161,23 @@ export default function LocationsPage() {
   /><br />
 
   {/* ✅ Coordinates Inputs */}
-  <input
-    type="number"
-    name="lat"
-    placeholder="Latitude"
-    value={form.lat}
-    onChange={handleChange}
-    step="any"
-  /><br />
-  <input
-    type="number"
-    name="lng"
-    placeholder="Longitude"
-    value={form.lng}
-    onChange={handleChange}
-    step="any"
-  /><br />
+ <input
+  type="number"
+  name="lat"
+  placeholder="Latitude"
+  value={form.lat}
+  onChange={handleChange}
+  step="any"
+/><br />
+<input
+  type="number"
+  name="lng"
+  placeholder="Longitude"
+  value={form.lng}
+  onChange={handleChange}
+  step="any"
+/><br />
+
 
   {/* ✅ Optional test */}
   <p>🧭 Coordinate inputs should show above this line</p>
