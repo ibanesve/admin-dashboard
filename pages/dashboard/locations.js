@@ -200,8 +200,12 @@ const handleSubmit = async (e) => {
     <th>Name</th>
     <th>Description</th>
     <th>Category</th>
+        <th>Latitude</th>
+<th>Longitude</th>
+
     <th>Image</th>
     <th>Actions</th>
+        
   </tr>
 </thead>
 
@@ -231,6 +235,34 @@ const handleSubmit = async (e) => {
         onChange={handleEditChange}
       />
     </td>
+
+                 <td>
+  {editingId === place.id ? (
+    <input
+      name="latitude"
+      value={editForm.latitude || ''}
+      onChange={handleEditChange}
+      type="number"
+      step="any"
+    />
+  ) : (
+    place.latitude
+  )}
+</td>
+<td>
+  {editingId === place.id ? (
+    <input
+      name="longitude"
+      value={editForm.longitude || ''}
+      onChange={handleEditChange}
+      type="number"
+      step="any"
+    />
+  ) : (
+    place.longitude
+  )}
+</td>
+
 
                  <td>
   {editingId === place.id ? (
