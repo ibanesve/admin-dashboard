@@ -75,20 +75,6 @@ export default function LocationsPage() {
         image_url = publicUrlData.publicUrl
       }
 
-      const { error } = await supabase.from('places').insert([
-        {
-          name: form.name,
-          description: form.description,
-          category: form.category,
-          image_url: image_url,
-          coordinates: {
-  lat: parseFloat(form.lat),
-  lng: parseFloat(form.lng),
-},
-
-        },
-      ])
-
       if (error) {
         console.error('Insert Error:', error)
         alert('Error saving to table: ' + error.message)
