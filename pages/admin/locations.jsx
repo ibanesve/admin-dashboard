@@ -1,4 +1,3 @@
-// pages/admin/locations.tsx
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 
@@ -37,12 +36,12 @@ export default function AdminLocations() {
     }
   };
 
-  const toggleApproval = async (id: number, approved: boolean) => {
+  const toggleApproval = async (id, approved) => {
     await supabase.from("locations").update({ approved: !approved }).eq("id", id);
     fetchLocations();
   };
 
-  const toggleFeatured = async (id: number, featured: boolean) => {
+  const toggleFeatured = async (id, featured) => {
     await supabase.from("locations").update({ featured: !featured }).eq("id", id);
     fetchLocations();
   };
@@ -81,8 +80,7 @@ export default function AdminLocations() {
           </tr>
         </thead>
         <tbody>
-         {locations.map((loc) => (
-
+          {locations.map((loc) => (
             <tr key={loc.id} className="border-t">
               <td className="p-2">{loc.name}</td>
               <td className="p-2">{loc.description}</td>
@@ -109,4 +107,3 @@ export default function AdminLocations() {
     </div>
   );
 }
-
