@@ -81,7 +81,8 @@ export default function AdminLocations() {
           </tr>
         </thead>
         <tbody>
-          {locations.map((loc: any) => (
+         {locations.map((loc) => (
+
             <tr key={loc.id} className="border-t">
               <td className="p-2">{loc.name}</td>
               <td className="p-2">{loc.description}</td>
